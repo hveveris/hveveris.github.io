@@ -1,32 +1,41 @@
 <?php
 
-    $to = 'harijs.veveris@gmail.com';
-    $subject = "Testa epasts";
+    if (isset($_POST['to']) && isset($_POST['from']) && isset($_POST['greeting']) && isset($_POST['img'])) {
 
-    $htmlContent = '
-        <html>
-        <head>
-            <title>Sveicināti</title>
-        </head>
-        <body>
-            <h1>Testējam html e-pastu!</h1>        
-        </body>
-        </html>';
+        $to = $_POST['to'];
+        $subject = "Ziemassvētku sveiciens!";
+        $url = "https://squalio.com/christmas-greeting/?from=" . $_POST['from'] . "&greeting=" . $_POST['greeting'] . "&img=" . $_POST['img'];
 
-    // Set content-type header for sending HTML email
-    $headers = "MIME-Version: 1.0" . "\r\n";
-    $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+        $htmlContent = '
+            <html>
+            <head>
+                <title>Sveicināti</title>
+            </head>
+            <body>
+                <h1><a href="' . $url . '">Testējam html e-pasta linku!</h1>        
+            </body>
+            </html>';
 
-    // Additional headers
-    $headers .= 'From: Cocóra Coffee Roasters<info@cocoracoffee.es>' . "\r\n";
-    //$headers .= 'Cc: welcome@example.com' . "\r\n";
-    //$headers .= 'Bcc: welcome2@example.com' . "\r\n";
+        // Set content-type header for sending HTML email
+        $headers = "MIME-Version: 1.0" . "\r\n";
+        $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
 
-    // Send email
-    if(mail($to,$subject,$htmlContent,$headers)):
-        $successMsg = 'Email was sent successfully.';
-    else:
-        $errorMsg = 'Email sending fail.';
-    endif;
+        // Additional headers
+        $headers .= 'From: Cocóra Coffee Roasters<info@cocoracoffee.es>' . "\r\n";
+        //$headers .= 'Cc: welcome@example.com' . "\r\n";
+        //$headers .= 'Bcc: welcome2@example.com' . "\r\n";
+
+        // Send email
+        if(mail($to, $subject, $htmlContent, $headers)):
+            $response = 'ok';
+        else:
+            $response = 'error';
+        endif;
+
+    } else {
+        $response = 'error';
+    }
+
+    echo $response;
 
 ?>
